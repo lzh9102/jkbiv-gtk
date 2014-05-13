@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+import jkbiv
+
+if __name__ == "__main__":
+    jkbiv.main()
