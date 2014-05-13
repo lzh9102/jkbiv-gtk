@@ -111,6 +111,7 @@ class ShortcutMapper(object):
         raise Exception("unbind() not implemented")
 
     def pressKey(self, keystroke):
+        assert(type(keystroke) == Keystroke)
         self.queue.append(keystroke)
         node = self.getNode(self.queue, create=False)
         if node:
