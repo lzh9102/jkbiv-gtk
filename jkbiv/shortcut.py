@@ -94,6 +94,7 @@ class ShortcutMapper(object):
         assert(type(keystrokes) == list)
         node = self.rootNode
         for key in keystrokes:
+            assert(type(key) == Keystroke)
             child = node.getChild(key)
             if child == None:
                 if create:

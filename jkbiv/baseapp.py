@@ -42,6 +42,9 @@ class BaseApplication(object):
             keystr = "A-" + keystr
         self.onKeyPress(keystr)
 
+    def quit(self):
+        self.window.destroy()
+
     # event callbacks
 
     def onKeyPress(self, keystr):
