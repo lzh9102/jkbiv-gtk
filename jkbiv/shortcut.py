@@ -1,5 +1,25 @@
 import re
 
+def parseKeySequence(keyseq):
+    """ Parse the key sequence string and return a Keystroke() list.
+        Returns None when parsing failed.
+    """
+    keystrokes = []
+    while len(keyseq) > 0:
+        match = re.match(r"^<([^>]+)>", keyseq)
+        if match: # found a non-displayable key (e.g. "<C-x>")
+            keystr = match.group(1) # string inside <>
+            keyseq = keyseq[len(match.group(0)):] # remove <...>
+        else:
+            keystr = keyseq[0] # the leading character
+            keyseq = keyseq[1:] # remove the leading character
+        try:
+            keystroke = Keystroke(keystr)
+            keystrokes.append(keystroke)
+        except:
+            return None
+    return keystrokes
+
 class Keystroke(object):
 
     def __init__(self, keystr):

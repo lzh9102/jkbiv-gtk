@@ -1,6 +1,32 @@
 from jkbiv.shortcut import *
 import unittest
 
+def KS(kstr):
+    """ convert a keystroke string to Keystroke() """
+    return Keystroke(kstr)
+
+def KSL(kstr):
+    """ convert a series of space-separated keystrokes to Keystroke() list """
+    return [KS(key) for key in kstr.split(" ")]
+
+class HelperFunctionsTest(unittest.TestCase):
+
+    def testKSL(self):
+        """ ensure KSL() is correct """
+        self.assertEqual(KSL("C-s"), [Keystroke("C-s")])
+        self.assertEqual(KSL("C-c C-x"), [Keystroke("C-c"), Keystroke("C-x")])
+
+    def testParseKeySequence(self):
+        self.assertEqual(parseKeySequence("<C-s>"),
+                         KSL("C-s"))
+        self.assertEqual(parseKeySequence("gu"),
+                         KSL("g u"))
+        self.assertEqual(parseKeySequence("<C-x>g"),
+                         KSL("C-x g"))
+        self.assertEqual(parseKeySequence("g<A-x>"),
+                         KSL("g A-x"))
+        self.assertEqual(parseKeySequence("a b"), None) # space not allowed
+
 class KeystrokeTest(unittest.TestCase):
 
     def testParsing(self):
@@ -34,20 +60,7 @@ class ActionNodeTest(unittest.TestCase):
         self.assertEqual(self.lastAction, "f1(5)")
         self.assertFalse(node.hasChild())
 
-def KS(kstr):
-    """ convert a keystroke string to Keystroke() """
-    return Keystroke(kstr)
-
-def KSL(kstr):
-    """ convert a series of space-separated keystrokes to Keystroke() list """
-    return [KS(key) for key in kstr.split(" ")]
-
 class ShortcutMapperTest(unittest.TestCase):
-
-    def testKSL(self):
-        """ ensure KSL() is correct """
-        self.assertEqual(KSL("C-s"), [Keystroke("C-s")])
-        self.assertEqual(KSL("C-c C-x"), [Keystroke("C-c"), Keystroke("C-x")])
 
     def testAction(self):
         mapper = ShortcutMapper()
