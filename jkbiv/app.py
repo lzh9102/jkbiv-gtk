@@ -1,8 +1,9 @@
 from baseapp import BaseApplication
 from shortcut import ShortcutMapper, Keystroke
-from resource import DirectoryWalker
+from res import DirectoryWalker
 import sys
 import os
+import resource
 
 class Application(BaseApplication):
 
@@ -25,6 +26,7 @@ class Application(BaseApplication):
         keymap.bind(KSL("q"), self.quit)
         keymap.bind(KSL("l"), self.fnNext)
         keymap.bind(KSL("h"), self.fnPrev)
+        keymap.bind(KSL("m"), self.fnPrintMemUsage)
 
     def onKeyPress(self, keystr):
         self.keymap.pressKey(Keystroke(keystr))
@@ -44,3 +46,7 @@ class Application(BaseApplication):
     def fnPrev(self):
         if self.dirwalker.prev():
             self.loadCurrentResource()
+
+    def fnPrintMemUsage(self):
+        usage = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        print "usage: %d" % usage
