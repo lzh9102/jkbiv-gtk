@@ -39,6 +39,11 @@ class Application(BaseApplication):
             self.loadImage(res.getUrl())
             self.redraw()
 
+    def onDraw(self):
+        res = self.dirwalker.currentResource()
+        if res:
+            self.drawText(res.getName(), 0, 0)
+
     # user-reachable functions
 
     def fnNext(self):

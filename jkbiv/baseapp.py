@@ -40,6 +40,7 @@ class BaseApplication(object):
         self.height = height
 
         self.pixbuf = None
+        self.pangolayout = self.drawarea.create_pango_layout("")
 
         # events
         window.connect("key_press_event", self.__handleKeyPress)
@@ -79,21 +80,23 @@ class BaseApplication(object):
 
     def redraw(self):
         print "Redraw(width=%d, height=%d)" % (self.width, self.height)
-        gc = self.drawarea.get_style().fg_gc[gtk.STATE_NORMAL]
+        self.gc = self.drawarea.get_style().fg_gc[gtk.STATE_NORMAL]
         self.drawarea.window.begin_paint_rect(gtk.gdk.Rectangle(
             0, 0, self.width, self.height))
         try:
-            self.redrawBackground(gc)
-            self.redrawImage(gc)
+            self.setDrawColor('#000')
+            self.redrawBackground()
+            self.redrawImage()
+            self.onDraw()
         finally:
             self.drawarea.window.end_paint()
 
-    def redrawBackground(self, gc):
+    def redrawBackground(self):
         # fill the background with black
-        self.drawarea.window.draw_rectangle(gc, True,
+        self.drawarea.window.draw_rectangle(self.gc, True,
                                             0, 0, self.width, self.height)
 
-    def redrawImage(self, gc):
+    def redrawImage(self):
         if self.pixbuf:
             # compute image area
             (x, y, width, height) = computeDrawingArea(self.width,
@@ -105,10 +108,22 @@ class BaseApplication(object):
             pixbuf = self.pixbuf.scale_simple(width, height,
                                               gtk.gdk.INTERP_BILINEAR)
             # draw image
-            self.drawarea.window.draw_pixbuf(gc, pixbuf, 0, 0, x, y)
+            self.drawarea.window.draw_pixbuf(self.gc, pixbuf, 0, 0, x, y)
+
+    def drawText(self, text, x, y):
+        self.pangolayout.set_text(text)
+        self.setDrawColor('#777')
+        self.drawarea.window.draw_layout(self.gc, x, y, self.pangolayout)
+
+    def setDrawColor(self, colorcode):
+        color = gtk.gdk.color_parse(colorcode)
+        self.gc.set_rgb_fg_color(color)
 
     # event callbacks
 
     def onKeyPress(self, keystr):
         """ this function will be called when a key is pressed """
+        pass
+
+    def onDraw(self):
         pass
