@@ -21,11 +21,13 @@ class Application(BaseApplication):
     def setupKeymaps(self):
         keymap = self.keymap
         # function to convert a string to Keystroke() list
-        KSL = lambda keys: [Keystroke(key) for key in keys]
+        KSL = lambda keys: [Keystroke(key) for key in keys.split(" ")]
         # setup keymaps
         keymap.bind(KSL("q"), self.quit)
         keymap.bind(KSL("l"), self.fnNext)
+        keymap.bind(KSL("right"), self.fnNext)
         keymap.bind(KSL("h"), self.fnPrev)
+        keymap.bind(KSL("left"), self.fnPrev)
         keymap.bind(KSL("m"), self.fnPrintMemUsage)
 
     def onKeyPress(self, keystr):
