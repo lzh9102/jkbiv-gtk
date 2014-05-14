@@ -7,15 +7,11 @@ import resource
 
 class Application(BaseApplication):
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, url):
         super(Application, self).__init__(width, height)
         self.keymap = ShortcutMapper()
         self.setupKeymaps()
-        if len(sys.argv) >= 2:
-            directory = sys.argv[1]
-        else:
-            directory = os.getcwd()
-        self.dirwalker = DirectoryWalker(directory)
+        self.dirwalker = DirectoryWalker(url)
         self.loadCurrentResource()
 
     def setupKeymaps(self):
