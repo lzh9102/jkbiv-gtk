@@ -15,7 +15,7 @@ class Application(BaseApplication):
         else:
             directory = os.getcwd()
         self.dirwalker = DirectoryWalker(directory)
-        self.redrawAll()
+        self.loadCurrentResource()
 
     def setupKeymaps(self):
         keymap = self.keymap
@@ -29,17 +29,18 @@ class Application(BaseApplication):
     def onKeyPress(self, keystr):
         self.keymap.pressKey(Keystroke(keystr))
 
-    def redrawAll(self):
+    def loadCurrentResource(self):
         res = self.dirwalker.currentResource()
         if res:
-            print "resource: %s" % res.getUrl()
+            self.loadImage(res.getUrl())
+            self.redraw()
 
     # user-reachable functions
 
     def fnNext(self):
         if self.dirwalker.next():
-            self.redrawAll()
+            self.loadCurrentResource()
 
     def fnPrev(self):
         if self.dirwalker.prev():
-            self.redrawAll()
+            self.loadCurrentResource()

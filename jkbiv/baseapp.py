@@ -20,8 +20,11 @@ class BaseApplication(object):
         self.width = width
         self.height = height
 
+        self.pixbuf = None
+
         # events
         window.connect("key_press_event", self.__handleKeyPress)
+        drawarea.connect("expose-event", self.gtkExposeEvent)
 
         window.show_all()
 
@@ -44,6 +47,21 @@ class BaseApplication(object):
 
     def quit(self):
         self.window.destroy()
+
+    def gtkExposeEvent(self, widget, event):
+        self.redraw()
+
+    def loadImage(self, url):
+        # TODO: implement image loader
+        self.pixbuf = gtk.gdk.pixbuf_new_from_file(url)
+
+    def redraw(self):
+        self.redrawImage()
+
+    def redrawImage(self):
+        if self.pixbuf:
+            self.drawarea.window.draw_pixbuf(None, self.pixbuf,
+                                            0, 0, 0, 0)
 
     # event callbacks
 
