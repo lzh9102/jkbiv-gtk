@@ -79,7 +79,6 @@ class BaseApplication(object):
         self.pixbuf = gtk.gdk.pixbuf_new_from_file(url)
 
     def redraw(self):
-        print "Redraw(width=%d, height=%d)" % (self.width, self.height)
         self.gc = self.drawarea.get_style().fg_gc[gtk.STATE_NORMAL]
         self.drawarea.window.begin_paint_rect(gtk.gdk.Rectangle(
             0, 0, self.width, self.height))
