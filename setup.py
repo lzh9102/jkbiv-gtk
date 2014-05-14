@@ -9,6 +9,7 @@ setup(name='jkbiv',
       author_email='lzh9102@gmail.com',
       url='',
       packages=['jkbiv', 'jkbiv.test'],
+      scripts=['bin/jkbiv'],
       install_requires=[],
       test_suite='jkbiv.test',
       )
