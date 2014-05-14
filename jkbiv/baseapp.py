@@ -80,8 +80,13 @@ class BaseApplication(object):
     def redraw(self):
         print "Redraw(width=%d, height=%d)" % (self.width, self.height)
         gc = self.drawarea.get_style().fg_gc[gtk.STATE_NORMAL]
-        self.redrawBackground(gc)
-        self.redrawImage(gc)
+        self.drawarea.window.begin_paint_rect(gtk.gdk.Rectangle(
+            0, 0, self.width, self.height))
+        try:
+            self.redrawBackground(gc)
+            self.redrawImage(gc)
+        finally:
+            self.drawarea.window.end_paint()
 
     def redrawBackground(self, gc):
         # fill the background with black
