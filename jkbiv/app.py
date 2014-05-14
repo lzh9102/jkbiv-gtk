@@ -29,6 +29,7 @@ class Application(BaseApplication):
         keymap.bind(KSL("h"), self.fnPrev)
         keymap.bind(KSL("left"), self.fnPrev)
         keymap.bind(KSL("m"), self.fnPrintMemUsage)
+        keymap.bind(KSL("f"), self.toggleFullscreen)
 
     def onKeyPress(self, keystr):
         self.keymap.pressKey(Keystroke(keystr))

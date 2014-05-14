@@ -42,6 +42,8 @@ class BaseApplication(object):
         self.pixbuf = None
         self.pangolayout = self.drawarea.create_pango_layout("")
 
+        self.is_fullscreen = False
+
         # events
         window.connect("key_press_event", self.__handleKeyPress)
         drawarea.connect("expose-event", self.gtkExposeEvent)
@@ -123,6 +125,16 @@ class BaseApplication(object):
 
     def setWindowTitle(self, title):
         self.window.set_title(title)
+
+    def setFullscreen(self, fullscreen=True):
+        if fullscreen:
+            self.window.fullscreen()
+        else:
+            self.window.unfullscreen()
+        self.is_fullscreen = fullscreen
+
+    def toggleFullscreen(self):
+        self.setFullscreen(not self.is_fullscreen)
 
     # event callbacks
 
