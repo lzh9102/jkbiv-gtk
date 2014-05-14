@@ -48,7 +48,7 @@ class DirectoryWalker(BaseResourceWalker):
     def __refresh(self, origFile=None):
         files = []
         for f in sorted(os.listdir(self.directory)):
-            filename = self.directory + os.path.sep + f
+            filename = os.path.join(self.directory, f)
             base, ext = os.path.splitext(filename)
             ext = ext[1:] # remove the dot, e.g. ".jpg" => "jpg"
             if os.path.isfile(filename) and ext in self.extensions:
@@ -72,6 +72,6 @@ class DirectoryWalker(BaseResourceWalker):
 
     def currentResource(self):
         if self.index >= 0 and self.index < len(self.files):
-            url = self.directory + os.path.sep + self.files[self.index]
+            url = os.path.join(self.directory, self.files[self.index])
             res = ResourceInfo(url=url)
             return res
