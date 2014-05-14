@@ -44,6 +44,9 @@ class Application(BaseApplication):
         if res:
             self.drawText(res.getName(), 0, 0)
             self.setWindowTitle("jkbiv - %s" % res.getName())
+        else:
+            self.drawText("No Image", 0, 0)
+            self.setWindowTitle("jkbiv")
 
     # user-reachable functions
 
