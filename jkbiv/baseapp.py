@@ -1,5 +1,12 @@
 import gtk
 
+def computeDrawingArea(windowWidth, windowHeight, imageWidth, imageHeight):
+    """ Determine how to draw the image at the center of the window as large as
+        possible and without cropping. Returns (x, y, width, height) of the
+        computed area.
+    """
+    return (0, 0, windowWidth, windowHeight)
+
 class BaseApplication(object):
 
     def __init__(self, width, height):
@@ -49,6 +56,9 @@ class BaseApplication(object):
         self.window.destroy()
 
     def gtkExposeEvent(self, widget, event):
+        (x, y, width, height) = event.area
+        self.width = width
+        self.height = height
         self.redraw()
 
     def loadImage(self, url):
@@ -56,12 +66,22 @@ class BaseApplication(object):
         self.pixbuf = gtk.gdk.pixbuf_new_from_file(url)
 
     def redraw(self):
+        print "Redraw(width=%d, height=%d)" % (self.width, self.height)
         self.redrawImage()
 
     def redrawImage(self):
         if self.pixbuf:
-            self.drawarea.window.draw_pixbuf(None, self.pixbuf,
-                                            0, 0, 0, 0)
+            # compute image area
+            (x, y, width, height) = computeDrawingArea(self.width,
+                                                       self.height,
+                                                       self.pixbuf.get_width(),
+                                                       self.pixbuf.get_height()
+                                                       )
+            # scale image
+            pixbuf = self.pixbuf.scale_simple(width, height,
+                                              gtk.gdk.INTERP_BILINEAR)
+            # draw image
+            self.drawarea.window.draw_pixbuf(None, pixbuf, 0, 0, x, y)
 
     # event callbacks
 
