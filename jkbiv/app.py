@@ -43,6 +43,7 @@ class Application(BaseApplication):
         res = self.dirwalker.currentResource()
         if res:
             self.drawText(res.getName(), 0, 0)
+            self.setWindowTitle("jkbiv - %s" % res.getName())
 
     # user-reachable functions
 

@@ -119,6 +119,9 @@ class BaseApplication(object):
         color = gtk.gdk.color_parse(colorcode)
         self.gc.set_rgb_fg_color(color)
 
+    def setWindowTitle(self, title):
+        self.window.set_title(title)
+
     # event callbacks
 
     def onKeyPress(self, keystr):
