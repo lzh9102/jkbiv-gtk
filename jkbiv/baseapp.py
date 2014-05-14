@@ -5,7 +5,19 @@ def computeDrawingArea(windowWidth, windowHeight, imageWidth, imageHeight):
         possible and without cropping. Returns (x, y, width, height) of the
         computed area.
     """
-    return (0, 0, windowWidth, windowHeight)
+    if windowWidth * imageHeight > windowHeight * imageWidth:
+        # ih/iw > wh/ww: image size bounded by height
+        width = imageWidth * windowHeight / imageHeight
+        height = windowHeight
+        x = (windowWidth - width) / 2
+        y = 0
+    else:
+        # ih/iw <= wh/ww: image size bounded by width
+        width = windowWidth
+        height = imageHeight * windowWidth / imageWidth
+        x = 0
+        y = (windowHeight - height) / 2
+    return (x, y, width, height)
 
 class BaseApplication(object):
 
