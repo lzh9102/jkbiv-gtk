@@ -31,6 +31,7 @@ class BaseResourceWalker(object):
 class DirectoryWalker(BaseResourceWalker):
 
     def __init__(self, path):
+        path = os.path.abspath(path)
         # decide the directory to walk and the starting file
         if os.path.isfile(path):
             # if `path` is a file, then walk its parent directory
