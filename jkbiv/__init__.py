@@ -8,18 +8,19 @@ def parse_args():
         description="A keyboard-oriented image viewer")
     parser.add_argument("path", type=str, nargs='?', default="",
                         help="the file or directory to open")
+    parser.add_argument("--profile", action="store_true", default=False,
+                        help="the file or directory to open")
     return parser.parse_args()
 
-def run():
-    args = parse_args()
+def run(args):
     app = Application(800, 600, args.path)
     gtk.main()
 
 def main():
-    profile = False
-    if profile:
+    args = parse_args()
+    if args.profile:
         profiler = cProfile.Profile()
-        profiler.runcall(run)
+        profiler.runcall(run, args)
         profiler.print_stats(sort=1)
     else:
-        run()
+        run(args)
