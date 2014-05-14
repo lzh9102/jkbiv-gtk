@@ -1,4 +1,3 @@
-import gtk
 import cProfile
 import argparse
 from app import Application
@@ -14,7 +13,7 @@ def parse_args():
 
 def run(args):
     app = Application(800, 600, args.path)
-    gtk.main()
+    app.run()
 
 def main():
     args = parse_args()

@@ -50,6 +50,9 @@ class BaseApplication(object):
 
         window.show_all()
 
+    def run(self):
+        gtk.main()
+
     def __isModifier(self, keystr):
         # TODO: improve efficiency by using numeric value
         return keystr.startswith("control_") or keystr.startswith("shift_") \
