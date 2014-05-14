@@ -79,7 +79,9 @@ class BaseApplication(object):
         self.pixbuf = gtk.gdk.pixbuf_new_from_file(url)
 
     def redraw(self):
+        # get graphics context
         self.gc = self.drawarea.get_style().fg_gc[gtk.STATE_NORMAL]
+        # begin_paint: draw subsequent operations to background buffer
         self.drawarea.window.begin_paint_rect(gtk.gdk.Rectangle(
             0, 0, self.width, self.height))
         try:
@@ -88,6 +90,7 @@ class BaseApplication(object):
             self.redrawImage()
             self.onDraw()
         finally:
+            # end_paint: draw background buffer to foreground
             self.drawarea.window.end_paint()
 
     def redrawBackground(self):
