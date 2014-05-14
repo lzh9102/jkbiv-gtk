@@ -79,9 +79,16 @@ class BaseApplication(object):
 
     def redraw(self):
         print "Redraw(width=%d, height=%d)" % (self.width, self.height)
-        self.redrawImage()
+        gc = self.drawarea.get_style().fg_gc[gtk.STATE_NORMAL]
+        self.redrawBackground(gc)
+        self.redrawImage(gc)
 
-    def redrawImage(self):
+    def redrawBackground(self, gc):
+        # fill the background with black
+        self.drawarea.window.draw_rectangle(gc, True,
+                                            0, 0, self.width, self.height)
+
+    def redrawImage(self, gc):
         if self.pixbuf:
             # compute image area
             (x, y, width, height) = computeDrawingArea(self.width,
@@ -93,7 +100,7 @@ class BaseApplication(object):
             pixbuf = self.pixbuf.scale_simple(width, height,
                                               gtk.gdk.INTERP_BILINEAR)
             # draw image
-            self.drawarea.window.draw_pixbuf(None, pixbuf, 0, 0, x, y)
+            self.drawarea.window.draw_pixbuf(gc, pixbuf, 0, 0, x, y)
 
     # event callbacks
 
