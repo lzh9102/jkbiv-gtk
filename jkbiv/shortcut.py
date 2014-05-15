@@ -6,13 +6,19 @@ def parseKeySequence(keyseq):
     """
     keystrokes = []
     while len(keyseq) > 0:
-        match = re.match(r"^<([^>]+)>", keyseq)
-        if match: # found a non-displayable key (e.g. "<C-x>")
-            keystr = match.group(1) # string inside <>
-            keyseq = keyseq[len(match.group(0)):] # remove <...>
+        if keyseq[0] == '\\': # escape next character
+            keystr = keyseq[0:2]
+            keyseq = keyseq[2:]
         else:
-            keystr = keyseq[0] # the leading character
-            keyseq = keyseq[1:] # remove the leading character
+            match = re.match(r"^<([^>]+)>", keyseq)
+            if match: # found a non-displayable key (e.g. "<C-x>")
+                keystr = match.group(1) # string inside <>
+                keyseq = keyseq[len(match.group(0)):] # remove <...>
+            else:
+                keystr = keyseq[0] # the leading character
+                keyseq = keyseq[1:] # remove the leading character
+        if ' ' in keystr: # no space allowed in key sequence
+            return None
         try:
             keystroke = Keystroke(keystr)
             keystrokes.append(keystroke)
@@ -41,8 +47,6 @@ class Keystroke(object):
                 keystr = keystr[len(match.group(0)):] # remove the modifier
             else: # no more modifiers
                 break
-        if not re.match(r"^[a-zA-Z0-9_]", keystr):
-            raise Exception("malformed keystroke string '%s'" % keystr)
         self.key = keystr.lower() # keys are normalized to upper case
         self.ctrl = ctrl
         self.meta = meta

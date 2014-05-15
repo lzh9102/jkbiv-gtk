@@ -19,6 +19,42 @@ def computeDrawingArea(windowWidth, windowHeight, imageWidth, imageHeight):
         y = (windowHeight - height) / 2
     return (x, y, width, height)
 
+# map gtk keyval name to key representation
+KEYVAL_NAME_REPR = {
+    'grave': '`',
+    'asciitilde': '~',
+    'exclam': '!',
+    'at': '@',
+    'numbersign': '#',
+    'dollar': '$',
+    'percent': '%',
+    'asciicircum': '^',
+    'ampersand': '&',
+    'asterisk': '*',
+    'parenleft': '(',
+    'parenright': ')',
+    'minus': '-',
+    'underscore': '_',
+    'equal': '=',
+    'plus': '+',
+    'braceleft': '{',
+    'braceright': '}',
+    'bracketleft': '[',
+    'bracketright': ']',
+    'backslash': '\\\\',
+    'bar': '|',
+    'semicolon': ';',
+    'colon': ':',
+    'apostrophe': "'",
+    'quotedbl': '"',
+    'comma': ',',
+    'less': '\\<',
+    'period': '.',
+    'greater': '\\>',
+    'slash': '/',
+    'question': '?',
+}
+
 class BaseApplication(object):
 
     def __init__(self, width, height):
@@ -60,10 +96,15 @@ class BaseApplication(object):
 
     def __handleKeyPress(self, widget, event):
         keystr = gtk.gdk.keyval_name(event.keyval).lower() # key name
+        is_symbol = False
+        if keystr in KEYVAL_NAME_REPR: # convert keystr to symbol
+            keystr = KEYVAL_NAME_REPR[keystr]
+            is_symbol = True
         if self.__isModifier(keystr): # ignore modifier keys
             return
         if event.state & gtk.gdk.SHIFT_MASK: # with shift key
-            keystr = "S-" + keystr
+            if not is_symbol: # don't prefix S- to symbols
+                keystr = "S-" + keystr
         if event.state & gtk.gdk.CONTROL_MASK: # with control key
             keystr = "C-" + keystr
         if event.state & gtk.gdk.MOD1_MASK: # with alt (meta) key
