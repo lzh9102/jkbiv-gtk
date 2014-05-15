@@ -20,10 +20,10 @@ class Application(BaseApplication):
         config = self.config
         functions = {
             "quit": self.quit,
-            "next": self.fnNext,
-            "prev": self.fnPrev,
+            "next": self.next,
+            "prev": self.prev,
             "fullscreen": self.toggleFullscreen,
-            "memory usage": self.fnPrintMemUsage,
+            "memory usage": self.printMemUsage,
         }
         # keybindings are written in the 'keymap' section
         for (name, value) in config.items('keymap'):
@@ -58,14 +58,14 @@ class Application(BaseApplication):
 
     # user-reachable functions
 
-    def fnNext(self):
+    def next(self):
         if self.dirwalker.next():
             self.loadCurrentResource()
 
-    def fnPrev(self):
+    def prev(self):
         if self.dirwalker.prev():
             self.loadCurrentResource()
 
-    def fnPrintMemUsage(self):
+    def printMemUsage(self):
         usage = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
         print "usage: %d" % usage
