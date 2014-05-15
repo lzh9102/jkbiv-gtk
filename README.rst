@@ -52,8 +52,10 @@ The *keymap* section contains the shortcut bindings options. The keys are the
 function names, and the values are (zero, one or multiple) keys that are mapped
 to the function. For example, ``quit = q <C-x><C-c>`` maps both the *q* key and
 the *Ctrl-x* *Ctrl-c* key sequence to the ``quit`` function. Note that there
-are no whitespace characters between ``<C-x>`` and ``<C-c>``. Here is a
-list of available functions:
+are no whitespace characters between ``<C-x>`` and ``<C-c>``. The symbols ``<``
+and ``>`` are used to group modifiers and keys. When mapping these two keys, it
+is necessary to escape them as ``\<`` and ``\>``. Following is a list of
+available functions:
 
 ================== ===============
    function name     description
