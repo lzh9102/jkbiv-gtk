@@ -4,6 +4,28 @@ JKB Image Viewer
 This is a work in progress to create a small and handy image viewer based on
 the `pygtk <http://www.pygtk.org/>`_ toolkit.
 
+Installation
+------------
+
+Before installaing *jibiv*, the following dependencies must be installed on
+your system:
+
+- `setuptools <https://pypi.python.org/pypi/setuptools>`_
+- pygtk
+
+To install *jkbiv* to your system, ``cd`` to the project directory and type the
+following command:
+
+::
+
+   python setup.py install
+
+If you want to hack on the code, type the following instead:
+
+::
+
+   python setup.py develop
+
 Usage
 -----
 
