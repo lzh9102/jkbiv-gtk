@@ -7,7 +7,7 @@ the `pygtk <http://www.pygtk.org/>`_ toolkit.
 Installation
 ------------
 
-Before installaing *jibiv*, the following dependencies must be installed on
+Before installaing *jkbiv*, the following dependencies must be installed on
 your system:
 
 - `setuptools <https://pypi.python.org/pypi/setuptools>`_
