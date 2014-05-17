@@ -45,15 +45,15 @@ class Application(BaseApplication):
         res = self.dirwalker.currentResource()
         if res:
             self.loadImage(res.getUrl())
-            self.redraw()
 
     def onDraw(self):
         res = self.dirwalker.currentResource()
         if res:
-            self.drawText(res.getName(), 0, 0)
+            #self.drawText(res.getName(), 0, 0)
             self.setWindowTitle("jkbiv - %s" % res.getName())
         else:
-            self.drawText("No Image", 0, 0)
+            #self.drawText("No Image", 0, 0)
+            pass
             self.setWindowTitle("jkbiv")
 
     # user-reachable functions

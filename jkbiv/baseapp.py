@@ -1,4 +1,5 @@
 import gtk
+from displaywidget import DisplayWidget
 
 def computeDrawingArea(windowWidth, windowHeight, imageWidth, imageHeight):
     """ Determine how to draw the image at the center of the window as large as
@@ -64,25 +65,18 @@ class BaseApplication(object):
         window.set_position(gtk.WIN_POS_CENTER)
         self.window = window
 
-        # drawing area
-        drawarea = gtk.DrawingArea()
-        drawarea.set_size_request(width, height)
-        window.add(drawarea)
-        #drawarea.window.set_background(gtk.gdk.Color(0, 255, 0))
-        #drawarea.window.draw_text(self.gc, "hello")
-        self.drawarea = drawarea
+        # image display widget
+        display = DisplayWidget()
+        window.add(display)
+        self.display = display
 
         self.width = width
         self.height = height
-
-        self.pixbuf = None
-        self.pangolayout = self.drawarea.create_pango_layout("")
 
         self.is_fullscreen = False
 
         # events
         window.connect("key_press_event", self.__handleKeyPress)
-        drawarea.connect("expose-event", self.gtkExposeEvent)
 
         window.show_all()
 
@@ -122,50 +116,8 @@ class BaseApplication(object):
 
     def loadImage(self, url):
         # TODO: implement image loader
-        self.pixbuf = gtk.gdk.pixbuf_new_from_file(url)
-
-    def redraw(self):
-        # get graphics context
-        self.gc = self.drawarea.get_style().fg_gc[gtk.STATE_NORMAL]
-        # begin_paint: draw subsequent operations to background buffer
-        self.drawarea.window.begin_paint_rect(gtk.gdk.Rectangle(
-            0, 0, self.width, self.height))
-        try:
-            self.setDrawColor('#000')
-            self.redrawBackground()
-            self.redrawImage()
-            self.onDraw()
-        finally:
-            # end_paint: draw background buffer to foreground
-            self.drawarea.window.end_paint()
-
-    def redrawBackground(self):
-        # fill the background with black
-        self.drawarea.window.draw_rectangle(self.gc, True,
-                                            0, 0, self.width, self.height)
-
-    def redrawImage(self):
-        if self.pixbuf:
-            # compute image area
-            (x, y, width, height) = computeDrawingArea(self.width,
-                                                       self.height,
-                                                       self.pixbuf.get_width(),
-                                                       self.pixbuf.get_height()
-                                                       )
-            # scale image
-            pixbuf = self.pixbuf.scale_simple(width, height,
-                                              gtk.gdk.INTERP_BILINEAR)
-            # draw image
-            self.drawarea.window.draw_pixbuf(self.gc, pixbuf, 0, 0, x, y)
-
-    def drawText(self, text, x, y):
-        self.pangolayout.set_text(text)
-        self.setDrawColor('#777')
-        self.drawarea.window.draw_layout(self.gc, x, y, self.pangolayout)
-
-    def setDrawColor(self, colorcode):
-        color = gtk.gdk.color_parse(colorcode)
-        self.gc.set_rgb_fg_color(color)
+        pixbuf = gtk.gdk.pixbuf_new_from_file(url)
+        self.display.setPixbuf(pixbuf)
 
     def setWindowTitle(self, title):
         self.window.set_title(title)
