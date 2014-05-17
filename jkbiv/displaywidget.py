@@ -18,7 +18,12 @@ class DisplayWidget(gtk.Widget):
         windowHeight = self.getHeight()
         imageWidth = self.pixbuf.get_width()
         imageHeight = self.pixbuf.get_height()
-        if windowWidth * imageHeight > windowHeight * imageWidth:
+        if imageWidth <= windowWidth and imageHeight <= windowHeight:
+            # the original image fit in the window, no need to zoom
+            x = (windowWidth - imageWidth) / 2
+            y = (windowHeight - imageHeight) / 2
+            return (x, y, imageWidth, imageHeight)
+        elif windowWidth * imageHeight > windowHeight * imageWidth:
             # ih/iw > wh/ww: image size bounded by height
             width = imageWidth * windowHeight / imageHeight
             height = windowHeight
