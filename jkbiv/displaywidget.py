@@ -9,9 +9,10 @@ class DisplayWidget(gtk.Widget):
         gtk.Widget.__init__(self)
 
     def computeDrawingArea(self):
-        """ Determine how to draw the image at the center of the window as
-        large as possible and without cropping. Returns (x, y, width, height)
-        of the computed area.  """
+        """ Determine the appropriate size to display the image.
+            If the image fits in the window, then display the original size.
+            Otherwise, scale the image to the maximum size that fits in the
+            window. """
         if not self.pixbuf: # no image allocated
             return None
         windowWidth = self.getWidth()
