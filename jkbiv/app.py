@@ -10,9 +10,22 @@ class Application(BaseApplication):
     def __init__(self, width, height, url):
         super(Application, self).__init__(width, height)
         self.config = config.loadConfig()
+        self.setupWindow()
         self.setupKeymaps()
         self.dirwalker = DirectoryWalker(url)
         self.loadCurrentResource()
+
+    def setupWindow(self):
+        config = self.config
+        section = 'window'
+        if not config.has_section(section):
+            return
+        # fullscreen mode
+        self.setFullscreen(config.getboolean(section, 'fullscreen'))
+        # window size
+        windowWidth = config.getint(section, 'width')
+        windowHeight = config.getint(section, 'height')
+        self.setWindowSize(windowWidth, windowHeight)
 
     def setupKeymaps(self):
         self.keymap = ShortcutMapper()

@@ -67,6 +67,22 @@ Options are in the form ``<key> = <value>``.
 
 Available sections and options are documented as follows.
 
+*window* Section
+~~~~~~~~~~~~~~~~
+
+The *window* section contains the settings of the main window. Available
+options are listed below:
+
+============ ========= =========================== =======================
+option       type      description                 example
+============ ========= =========================== =======================
+fullscreen   boolean   fullscreen mode on startup  ``fullscreen = false``
+------------ --------- --------------------------- -----------------------
+width        integer   window width on startup     ``width = 800``
+------------ --------- --------------------------- -----------------------
+height       integer   window height on startup    ``height = 600``
+============ ========= =========================== =======================
+
 *keymap* Section
 ~~~~~~~~~~~~~~~~
 

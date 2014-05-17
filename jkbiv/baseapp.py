@@ -122,6 +122,9 @@ class BaseApplication(object):
     def setWindowTitle(self, title):
         self.window.set_title(title)
 
+    def setWindowSize(self, width, height):
+        self.window.set_size_request(width, height)
+
     def setFullscreen(self, fullscreen=True):
         if fullscreen:
             self.window.fullscreen()
