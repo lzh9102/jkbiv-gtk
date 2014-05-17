@@ -10,12 +10,12 @@ class Application(BaseApplication):
     def __init__(self, width, height, url):
         super(Application, self).__init__(width, height)
         self.config = config.loadConfig()
-        self.keymap = ShortcutMapper()
         self.setupKeymaps()
         self.dirwalker = DirectoryWalker(url)
         self.loadCurrentResource()
 
     def setupKeymaps(self):
+        self.keymap = ShortcutMapper()
         keymap = self.keymap
         config = self.config
         functions = {
