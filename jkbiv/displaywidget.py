@@ -8,7 +8,7 @@ class DisplayWidget(gtk.Widget):
     def __init__(self):
         gtk.Widget.__init__(self)
 
-    def computeDrawingArea(self):
+    def computeDefaultDrawingArea(self):
         """ Determine the appropriate size to display the image.
             If the image fits in the window, then display the original size.
             Otherwise, scale the image to the maximum size that fits in the
@@ -94,7 +94,7 @@ class DisplayWidget(gtk.Widget):
     def redrawImage(self):
         if self.pixbuf:
             # compute image area
-            (x, y, width, height) = self.computeDrawingArea()
+            (x, y, width, height) = self.computeDefaultDrawingArea()
             # scale image
             new_pixbuf = self.pixbuf.scale_simple(width, height,
                                                   gtk.gdk.INTERP_BILINEAR)
