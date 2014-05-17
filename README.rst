@@ -55,6 +55,10 @@ file:
 
 .. code:: ini
 
+   [window]
+   fullscreen = false
+   width = 800
+   height = 600
    [keymap]
    quit = q
    next = l <right> <C-n> <space>
