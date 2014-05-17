@@ -7,8 +7,8 @@ import config
 
 class Application(BaseApplication):
 
-    def __init__(self, width, height, url):
-        super(Application, self).__init__(width, height)
+    def __init__(self, url):
+        super(Application, self).__init__()
         self.config = config.loadConfig()
         self.setupWindow()
         self.setupKeymaps()

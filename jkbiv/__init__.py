@@ -12,7 +12,7 @@ def parse_args():
     return parser.parse_args()
 
 def run(args):
-    app = Application(800, 600, args.path)
+    app = Application(args.path)
     app.run()
 
 def main():

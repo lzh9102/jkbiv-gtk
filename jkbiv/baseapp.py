@@ -58,10 +58,9 @@ KEYVAL_NAME_REPR = {
 
 class BaseApplication(object):
 
-    def __init__(self, width, height):
+    def __init__(self):
         window = gtk.Window()
         window.connect("destroy", gtk.main_quit)
-        window.set_size_request(width, height)
         window.set_position(gtk.WIN_POS_CENTER)
         self.window = window
 
@@ -69,9 +68,6 @@ class BaseApplication(object):
         display = DisplayWidget()
         window.add(display)
         self.display = display
-
-        self.width = width
-        self.height = height
 
         self.is_fullscreen = False
 
@@ -123,7 +119,7 @@ class BaseApplication(object):
         self.window.set_title(title)
 
     def setWindowSize(self, width, height):
-        self.window.set_size_request(width, height)
+        self.window.resize(width, height)
 
     def setFullscreen(self, fullscreen=True):
         if fullscreen:
