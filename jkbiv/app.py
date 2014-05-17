@@ -45,8 +45,9 @@ class Application(BaseApplication):
         res = self.dirwalker.currentResource()
         if res:
             self.loadImage(res.getUrl())
+            self.updateWindowTitle()
 
-    def onDraw(self):
+    def updateWindowTitle(self):
         res = self.dirwalker.currentResource()
         if res:
             #self.drawText(res.getName(), 0, 0)

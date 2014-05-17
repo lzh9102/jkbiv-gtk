@@ -137,6 +137,3 @@ class BaseApplication(object):
     def onKeyPress(self, keystr):
         """ this function will be called when a key is pressed """
         pass
-
-    def onDraw(self):
-        pass
