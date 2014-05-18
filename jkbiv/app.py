@@ -36,6 +36,13 @@ class Application(BaseApplication):
             "next": self.next,
             "prev": self.prev,
             "fullscreen": self.toggleFullscreen,
+            "zoom in": self.zoomIn,
+            "zoom out": self.zoomOut,
+            "restore": self.restore,
+            "left": lambda: self.moveViewPort(-10, 0),
+            "right": lambda: self.moveViewPort(+10, 0),
+            "up": lambda: self.moveViewPort(0, -10),
+            "down": lambda: self.moveViewPort(0, +10),
             "memory usage": self.printMemUsage,
         }
         # keybindings are written in the 'keymap' section

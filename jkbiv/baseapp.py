@@ -131,6 +131,20 @@ class BaseApplication(object):
     def toggleFullscreen(self):
         self.setFullscreen(not self.is_fullscreen)
 
+    def zoomIn(self):
+        self.display.zoom(+0.1)
+
+    def zoomOut(self):
+        self.display.zoom(-0.1)
+
+    def moveViewPort(self, dx, dy):
+        # moving viewport is the opposite direction of moving image
+        self.display.moveImage(-dx, -dy)
+
+    def restore(self):
+        self.display.setZoomLevel(1.0)
+        self.display.setOffset(0, 0)
+
     # event callbacks
 
     def onKeyPress(self, keystr):

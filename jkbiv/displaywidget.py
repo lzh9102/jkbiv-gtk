@@ -7,6 +7,39 @@ class DisplayWidget(gtk.Widget):
 
     def __init__(self):
         gtk.Widget.__init__(self)
+        self.zoomLevel = 1.0
+        self.offsetX = self.offsetY = 0
+
+    def getZoomLevel(self):
+        return self.zoomLevel
+
+    def setZoomLevel(self, zoom):
+        assert(type(zoom) == float)
+        self.zoomLevel = zoom
+        self.invalidateView()
+
+    def zoom(self, diff):
+        zoom = self.getZoomLevel() + diff
+        if zoom < 0.1:
+            zoom = 0.1
+        elif zoom > 10:
+            zoom = 10
+        self.setZoomLevel(zoom)
+
+    def getOffset(self):
+        return (self.offsetX, self.offsetY)
+
+    def setOffset(self, x, y):
+        self.offsetX = x
+        self.offsetY = y
+        self.invalidateView()
+
+    def moveImage(self, dx, dy):
+        (x, y) = self.getOffset()
+        x += dx
+        y += dy
+        self.setOffset(x, y)
+
 
     def computeDefaultDrawingArea(self):
         """ Determine the appropriate size to display the image.
@@ -95,17 +128,25 @@ class DisplayWidget(gtk.Widget):
         if self.pixbuf:
             # compute image area
             (x, y, width, height) = self.computeDefaultDrawingArea()
+            # zooming and offset
+            x += self.offsetX
+            y += self.offsetY
+            width = int(width * self.zoomLevel)
+            height = int(height * self.zoomLevel)
             # scale image
             new_pixbuf = self.pixbuf.scale_simple(width, height,
                                                   gtk.gdk.INTERP_BILINEAR)
             # draw image
             self.window.draw_pixbuf(self.gc, new_pixbuf, 0, 0, x, y)
 
+    def invalidateView(self):
+        self.window.invalidate_rect(self.allocation, True) # redraw widget
+
     # public methods
 
     def setPixbuf(self, pixbuf):
         self.pixbuf = pixbuf
-        self.window.invalidate_rect(self.allocation, True) # redraw widget
+        self.invalidateView()
 
 # register custom widget as a GObject
 gobject.type_register(DisplayWidget)

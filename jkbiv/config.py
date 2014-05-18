@@ -10,9 +10,17 @@ width = 800
 height = 600
 [keymap]
 quit = q
-next = l <right> <C-n> <space>
-prev = h <left> <C-p> <backspace>
+next = <right> <C-n> <space>
+prev = <left> <C-p> <backspace>
 fullscreen = f
+zoom in = zi + <C-=>
+zoom out = zo - <C-->
+restore = zz = <C-0>
+up = k
+down = j
+left = h
+right = l
+memory usage = m
 """
 
 def loadConfig():
