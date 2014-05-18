@@ -9,7 +9,7 @@ fullscreen = false
 width = 800
 height = 600
 [keymap]
-quit = q
+quit = q <escape>
 next = l j <right> <C-n> <space>
 prev = h k <left> <C-p> <backspace>
 fullscreen = f
