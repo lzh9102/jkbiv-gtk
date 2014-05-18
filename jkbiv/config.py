@@ -10,16 +10,16 @@ width = 800
 height = 600
 [keymap]
 quit = q
-next = <right> <C-n> <space>
-prev = <left> <C-p> <backspace>
+next = l j <right> <C-n> <space>
+prev = h k <left> <C-p> <backspace>
 fullscreen = f
-zoom in = zi + <C-=>
-zoom out = zo - <C-->
+zoom in = i zi + <C-=>
+zoom out = o zo - <C-->
 restore = zz = <C-0>
-up = k
-down = j
-left = h
-right = l
+up = <C-k> <C-up>
+down = <C-j> <C-down>
+left = <C-h> <C-left>
+right = <C-l> <C-right>
 memory usage = m
 """
 
