@@ -1,6 +1,7 @@
 import gtk
 import gobject
 from gtk import gdk
+from gtk.gdk import Rectangle
 
 class DisplayWidget(gtk.Widget):
     """ A image-displaying widget """
@@ -56,7 +57,7 @@ class DisplayWidget(gtk.Widget):
             # the original image fit in the window, no need to zoom
             x = (windowWidth - imageWidth) / 2
             y = (windowHeight - imageHeight) / 2
-            return (x, y, imageWidth, imageHeight)
+            return Rectangle(x, y, imageWidth, imageHeight)
         elif windowWidth * imageHeight > windowHeight * imageWidth:
             # ih/iw > wh/ww: image size bounded by height
             width = imageWidth * windowHeight / imageHeight
@@ -69,18 +70,18 @@ class DisplayWidget(gtk.Widget):
             height = imageHeight * windowWidth / imageWidth
             x = 0
             y = (windowHeight - height) / 2
-        return (x, y, width, height)
+        return Rectangle(x, y, width, height)
 
     def computeImageRect(self):
         """ Compute the boundaries of the image after zooming and translation.
         """
-        (x0, y0, w0, h0) = self.computeDefaultDrawingArea()
+        rect = self.computeDefaultDrawingArea()
         # zooming and offset
-        x = x0 + self.offsetX
-        y = y0 + self.offsetY
-        width = int(w0 * self.zoomLevel)
-        height = int(h0 * self.zoomLevel)
-        return (x, y, width, height)
+        x = rect.x + self.offsetX
+        y = rect.y + self.offsetY
+        width = int(rect.width * self.zoomLevel)
+        height = int(rect.height * self.zoomLevel)
+        return Rectangle(x, y, width, height)
 
     # events
 
@@ -138,12 +139,12 @@ class DisplayWidget(gtk.Widget):
     def redrawImage(self):
         if self.pixbuf:
             # compute image area
-            (x, y, width, height) = self.computeImageRect()
+            rect = self.computeImageRect()
             # scale image
-            new_pixbuf = self.pixbuf.scale_simple(width, height,
+            new_pixbuf = self.pixbuf.scale_simple(rect.width, rect.height,
                                                   gtk.gdk.INTERP_BILINEAR)
             # draw image
-            self.window.draw_pixbuf(self.gc, new_pixbuf, 0, 0, x, y)
+            self.window.draw_pixbuf(self.gc, new_pixbuf, 0, 0, rect.x, rect.y)
 
     def invalidateView(self):
         self.window.invalidate_rect(self.allocation, True) # redraw widget
