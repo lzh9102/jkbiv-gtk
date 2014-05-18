@@ -1,5 +1,6 @@
 import os
 
+# all extensions should be in lower case
 EXTENSIONS = ["jpg", "png", "bmp"]
 
 class ResourceInfo(object):
@@ -50,7 +51,7 @@ class DirectoryWalker(BaseResourceWalker):
         for f in sorted(os.listdir(self.directory)):
             filename = os.path.join(self.directory, f)
             base, ext = os.path.splitext(filename)
-            ext = ext[1:] # remove the dot, e.g. ".jpg" => "jpg"
+            ext = ext[1:].lower() # remove the dot, e.g. ".jpg" => "jpg"
             if os.path.isfile(filename) and ext in self.extensions:
                 files.append(f)
         self.index = files.index(origFile) if origFile in files else 0
