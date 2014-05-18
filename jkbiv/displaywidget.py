@@ -18,6 +18,18 @@ class Rectangle(object):
         return "Rectangle(%d, %d, %d, %d)" % \
             (self.x, self.y, self.width, self.height)
 
+    def left(self):
+        return self.x
+
+    def right(self):
+        return self.x + self.width
+
+    def top(self):
+        return self.y
+
+    def bottom(self):
+        return self.y + self.height
+
     def computeScaledRect(self, scale, cx, cy):
         """ Return a new rectangle scaled with respect to (cx, cy) """
         assert(type(scale) == float)
@@ -70,10 +82,14 @@ class DisplayWidget(gtk.Widget):
 
     def moveImage(self, dx, dy):
         (x, y) = self.getOffset()
-        x += dx
-        y += dy
+        r = self.computeImageRect()
+        if (dx > 0 and r.left() < 0) or \
+                (dx < 0 and r.right() > self.getWidth()):
+            x += dx
+        if (dy > 0 and r.top() < 0) or \
+                (dy < 0 and r.bottom() > self.getHeight()):
+            y += dy
         self.setOffset(x, y)
-
 
     def computeDefaultDrawingArea(self):
         """ Determine the appropriate size to display the image.
