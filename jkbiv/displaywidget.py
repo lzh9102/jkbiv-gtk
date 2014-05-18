@@ -42,7 +42,16 @@ class DisplayWidget(gtk.Widget):
 
     def setZoomLevel(self, zoom):
         assert(type(zoom) == float)
+        # resize the image area with respect to center of the window
+        oldrect = self.computeImageRect()
+        oldzoom = self.zoomLevel
+        zoomRatio = zoom / oldzoom
+        (cx, cy) = (self.getWidth() / 2, self.getHeight() / 2)
+        newrect = oldrect.computeScaledRect(zoomRatio, cx, cy)
+        # update the zoom level and position
         self.zoomLevel = zoom
+        self.offsetX += newrect.x - oldrect.x
+        self.offsetY += newrect.y - oldrect.y
         self.invalidateView()
 
     def zoom(self, diff):
