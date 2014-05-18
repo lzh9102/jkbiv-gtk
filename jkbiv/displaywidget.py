@@ -77,8 +77,8 @@ class DisplayWidget(gtk.Widget):
             return None
         windowWidth = self.getWidth()
         windowHeight = self.getHeight()
-        imageWidth = self.pixbuf.get_width()
-        imageHeight = self.pixbuf.get_height()
+        imageWidth = self.getImageWidth()
+        imageHeight = self.getImageHeight()
         if imageWidth <= windowWidth and imageHeight <= windowHeight:
             # the original image fit in the window, no need to zoom
             x = (windowWidth - imageWidth) / 2
@@ -148,6 +148,12 @@ class DisplayWidget(gtk.Widget):
 
     def getHeight(self):
         return self.allocation.height
+
+    def getImageWidth(self):
+        return self.pixbuf.get_width()
+
+    def getImageHeight(self):
+        return self.pixbuf.get_height()
 
     # drawing functions
 
