@@ -109,6 +109,20 @@ available functions:
    prev              previous image
 ------------------ ---------------
    fullscreen        toggle fullscreen mode
+------------------ ---------------
+   zoom in           zoom in the viewport
+------------------ ---------------
+   zoom out          zoom out the viewport
+------------------ ---------------
+   restore           cancel zooming
+------------------ ---------------
+   up                move the viewport up
+------------------ ---------------
+   down              move the viewport down
+------------------ ---------------
+   left              move the viewport left
+------------------ ---------------
+   right             move the viewport right
 ================== ===============
 
 Todo
@@ -117,7 +131,7 @@ Todo
 Here are several functions I want to implement:
 
 - auto reload when file or directory changes
-- zoom in/out
+- **[Done]** zoom in/out
 - load file in background
 - preload and cache adjacent images
 
