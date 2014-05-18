@@ -5,10 +5,10 @@ from gtk import gdk
 class Rectangle(object):
 
     def __init__(self, x, y, width, height):
-        self.x = int(x)
-        self.y = int(y)
-        self.width = int(width)
-        self.height = int(height)
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
 
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y and \
@@ -33,12 +33,11 @@ class Rectangle(object):
     def computeScaledRect(self, scale, cx, cy):
         """ Return a new rectangle scaled with respect to (cx, cy) """
         assert(type(scale) == float)
-        assert(type(cx) == int and type(cy) == int)
         (x0, y0, w0, h0) = (self.x, self.y, self.width, self.height)
-        w1 = int(self.width * scale)
-        h1 = int(self.height * scale)
-        x1 = cx - int((cx - x0) * scale)
-        y1 = cy - int((cy - y0) * scale)
+        w1 = self.width * scale
+        h1 = self.height * scale
+        x1 = cx - (cx - x0) * scale
+        y1 = cy - (cy - y0) * scale
         return Rectangle(x1, y1, w1, h1)
 
 class DisplayWidget(gtk.Widget):
@@ -56,7 +55,7 @@ class DisplayWidget(gtk.Widget):
         oldrect = self.computeImageRect()
         oldzoom = self.zoomLevel
         zoomRatio = zoom / oldzoom
-        (cx, cy) = (self.getWidth() / 2, self.getHeight() / 2)
+        (cx, cy) = (self.getWidth() / 2.0, self.getHeight() / 2.0)
         newrect = oldrect.computeScaledRect(zoomRatio, cx, cy)
         # update the zoom level and position
         self.zoomLevel = zoom
@@ -128,8 +127,8 @@ class DisplayWidget(gtk.Widget):
         # zooming and offset
         x = rect.x + self.offsetX
         y = rect.y + self.offsetY
-        width = int(rect.width * self.zoomLevel)
-        height = int(rect.height * self.zoomLevel)
+        width = rect.width * self.zoomLevel
+        height = rect.height * self.zoomLevel
         return Rectangle(x, y, width, height)
 
     def resetZoomAndOffset(self):
@@ -195,18 +194,20 @@ class DisplayWidget(gtk.Widget):
         color = gtk.gdk.color_parse('#000')
         self.gc.set_rgb_fg_color(color)
         self.window.draw_rectangle(self.gc, True, 0, 0,
-                                   self.getWidth(),
-                                   self.getHeight())
+                                   int(self.getWidth()),
+                                   int(self.getHeight()))
 
     def redrawImage(self):
         if self.pixbuf:
             # compute image area
             rect = self.computeImageRect()
             # scale image
-            new_pixbuf = self.pixbuf.scale_simple(rect.width, rect.height,
+            new_pixbuf = self.pixbuf.scale_simple(int(rect.width),
+                                                  int(rect.height),
                                                   gtk.gdk.INTERP_BILINEAR)
             # draw image
-            self.window.draw_pixbuf(self.gc, new_pixbuf, 0, 0, rect.x, rect.y)
+            self.window.draw_pixbuf(self.gc, new_pixbuf, 0, 0,
+                                    int(rect.x), int(rect.y))
 
     def invalidateView(self):
         self.window.invalidate_rect(self.allocation, True) # redraw widget
