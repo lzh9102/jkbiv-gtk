@@ -5,10 +5,29 @@ from gtk import gdk
 class Rectangle(object):
 
     def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
+        self.x = int(x)
+        self.y = int(y)
+        self.width = int(width)
+        self.height = int(height)
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and \
+            self.width == other.width and self.height == other.height
+
+    def __repr__(self):
+        return "Rectangle(%d, %d, %d, %d)" % \
+            (self.x, self.y, self.width, self.height)
+
+    def computeScaledRect(self, scale, cx, cy):
+        """ Return a new rectangle scaled with respect to (cx, cy) """
+        assert(type(scale) == float)
+        assert(type(cx) == int and type(cy) == int)
+        (x0, y0, w0, h0) = (self.x, self.y, self.width, self.height)
+        w1 = int(self.width * scale)
+        h1 = int(self.height * scale)
+        x1 = cx - int((cx - x0) * scale)
+        y1 = cy - int((cy - y0) * scale)
+        return Rectangle(x1, y1, w1, h1)
 
 class DisplayWidget(gtk.Widget):
     """ A image-displaying widget """
