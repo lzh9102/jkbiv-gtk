@@ -71,6 +71,17 @@ class DisplayWidget(gtk.Widget):
             y = (windowHeight - height) / 2
         return (x, y, width, height)
 
+    def computeImageRect(self):
+        """ Compute the boundaries of the image after zooming and translation.
+        """
+        (x0, y0, w0, h0) = self.computeDefaultDrawingArea()
+        # zooming and offset
+        x = x0 + self.offsetX
+        y = y0 + self.offsetY
+        width = int(w0 * self.zoomLevel)
+        height = int(h0 * self.zoomLevel)
+        return (x, y, width, height)
+
     # events
 
     def do_realize(self):
@@ -127,12 +138,7 @@ class DisplayWidget(gtk.Widget):
     def redrawImage(self):
         if self.pixbuf:
             # compute image area
-            (x, y, width, height) = self.computeDefaultDrawingArea()
-            # zooming and offset
-            x += self.offsetX
-            y += self.offsetY
-            width = int(width * self.zoomLevel)
-            height = int(height * self.zoomLevel)
+            (x, y, width, height) = self.computeImageRect()
             # scale image
             new_pixbuf = self.pixbuf.scale_simple(width, height,
                                                   gtk.gdk.INTERP_BILINEAR)
