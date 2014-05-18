@@ -1,7 +1,14 @@
 import gtk
 import gobject
 from gtk import gdk
-from gtk.gdk import Rectangle
+
+class Rectangle(object):
+
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
 
 class DisplayWidget(gtk.Widget):
     """ A image-displaying widget """
