@@ -34,8 +34,6 @@ class DisplayWidget(gtk.Widget):
 
     def __init__(self):
         gtk.Widget.__init__(self)
-        self.zoomLevel = 1.0
-        self.offsetX = self.offsetY = 0
 
     def getZoomLevel(self):
         return self.zoomLevel
@@ -118,6 +116,11 @@ class DisplayWidget(gtk.Widget):
         height = int(rect.height * self.zoomLevel)
         return Rectangle(x, y, width, height)
 
+    def resetZoomAndOffset(self):
+        self.zoomLevel = 1.0
+        self.offsetX = self.offsetY = 0
+        self.invalidateView()
+
     # events
 
     def do_realize(self):
@@ -143,6 +146,8 @@ class DisplayWidget(gtk.Widget):
         self.gc = self.style.fg_gc[gtk.STATE_NORMAL]
         # image pixbuf
         self.pixbuf = None
+        # initialize zoom and offset variables
+        self.resetZoomAndOffset()
 
     def do_unrealize(self):
         self.window.destroy()
@@ -194,6 +199,7 @@ class DisplayWidget(gtk.Widget):
 
     def setPixbuf(self, pixbuf):
         self.pixbuf = pixbuf
+        self.resetZoomAndOffset()
         self.invalidateView()
 
 # register custom widget as a GObject
