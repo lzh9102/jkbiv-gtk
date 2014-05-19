@@ -1,5 +1,6 @@
 import gtk
 from displaywidget import DisplayWidget
+import loader
 
 def computeDrawingArea(windowWidth, windowHeight, imageWidth, imageHeight):
     """ Determine how to draw the image at the center of the window as large as
@@ -111,9 +112,12 @@ class BaseApplication(object):
         self.redraw()
 
     def loadImage(self, url):
-        # TODO: implement image loader
-        pixbuf = gtk.gdk.pixbuf_new_from_file(url)
-        self.display.setPixbuf(pixbuf)
+        pixbuf = loader.loadImageFromFile(url)
+        if pixbuf != None:
+            self.display.setPixbuf(pixbuf)
+        else:
+            # TODO: notify: unable to load image
+            print("error: failed to load image: %s" % url)
 
     def setWindowTitle(self, title):
         self.window.set_title(title)
