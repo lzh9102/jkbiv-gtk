@@ -132,10 +132,10 @@ class BaseApplication(object):
         self.setFullscreen(not self.is_fullscreen)
 
     def zoomIn(self):
-        self.display.zoom(+0.1)
+        self.display.zoom(1.3)
 
     def zoomOut(self):
-        self.display.zoom(-0.1)
+        self.display.zoom(1/1.3)
 
     def moveViewPort(self, dx, dy):
         # moving viewport is the opposite direction of moving image

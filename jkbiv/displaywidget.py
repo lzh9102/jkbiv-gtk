@@ -87,8 +87,8 @@ class DisplayWidget(gtk.Widget):
         self.offsetY += newrect.y - oldrect.y
         self.invalidateView()
 
-    def zoom(self, diff):
-        zoom = self.getZoomLevel() + diff
+    def zoom(self, ratio):
+        zoom = self.getZoomLevel() * ratio
         if zoom < 0.1:
             zoom = 0.1
         elif zoom > 10:
