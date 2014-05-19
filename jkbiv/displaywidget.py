@@ -40,6 +40,30 @@ class Rectangle(object):
         y1 = cy - (cy - y0) * scale
         return Rectangle(x1, y1, w1, h1)
 
+class PixbufContainer(object):
+
+    def __init__(self, pixbuf):
+        self._pixbuf = pixbuf
+        self._cached_pixbuf = None
+        self._cached_width = self._cached_height = 0
+
+    def getPixbuf(self):
+        return self._pixbuf
+
+    def getScaledPixbuf(self, width, height):
+        if self._cached_pixbuf and \
+                self._cached_width == width and self._cached_height == height:
+            # cache hit
+            scaled_pixbuf = self._cached_pixbuf
+        else: # cache miss
+            scaled_pixbuf = self._pixbuf.scale_simple(int(width),
+                                                      int(height),
+                                                      gtk.gdk.INTERP_BILINEAR)
+        self._cached_pixbuf = scaled_pixbuf
+        self._cached_width = width
+        self._cached_height = height
+        return scaled_pixbuf
+
 class DisplayWidget(gtk.Widget):
     """ A image-displaying widget """
 
@@ -202,9 +226,8 @@ class DisplayWidget(gtk.Widget):
             # compute image area
             rect = self.computeImageRect()
             # scale image
-            new_pixbuf = self.pixbuf.scale_simple(int(rect.width),
-                                                  int(rect.height),
-                                                  gtk.gdk.INTERP_BILINEAR)
+            new_pixbuf = self.pixbuf_container.getScaledPixbuf(rect.width,
+                                                               rect.height)
             # draw image
             self.window.draw_pixbuf(self.gc, new_pixbuf, 0, 0,
                                     int(rect.x), int(rect.y))
@@ -216,6 +239,7 @@ class DisplayWidget(gtk.Widget):
 
     def setPixbuf(self, pixbuf):
         self.pixbuf = pixbuf
+        self.pixbuf_container = PixbufContainer(pixbuf)
         self.resetZoomAndOffset()
         self.invalidateView()
 
