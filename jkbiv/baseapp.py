@@ -1,4 +1,6 @@
 import gtk
+import gobject
+import threading
 from displaywidget import DisplayWidget
 import loader
 
@@ -57,6 +59,17 @@ KEYVAL_NAME_REPR = {
     'question': '?',
 }
 
+class ImageLoaderThread(threading.Thread):
+
+    def __init__(self, url, callback):
+        super(ImageLoaderThread, self).__init__()
+        self.url = url
+        self.callback = callback
+
+    def run(self):
+        pixbuf = loader.loadImageFromFile(self.url)
+        gobject.idle_add(self.callback, self.url, pixbuf)
+
 class BaseApplication(object):
 
     def __init__(self):
@@ -78,6 +91,7 @@ class BaseApplication(object):
         window.show_all()
 
     def run(self):
+        gobject.threads_init()
         gtk.main()
 
     def __isModifier(self, keystr):
@@ -112,9 +126,15 @@ class BaseApplication(object):
         self.redraw()
 
     def loadImage(self, url):
-        pixbuf = loader.loadImageFromFile(url)
+        self.currentUrl = url
+        thread = ImageLoaderThread(url, self.onImageLoaded)
+        self.imageLoaderThread = thread # keep a reference
+        thread.start()
+
+    def onImageLoaded(self, url, pixbuf):
         if pixbuf != None:
-            self.display.setPixbuf(pixbuf)
+            if url == self.currentUrl:
+                self.display.setPixbuf(pixbuf)
         else:
             # TODO: notify: unable to load image
             print("error: failed to load image: %s" % url)
