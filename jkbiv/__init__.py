@@ -12,8 +12,11 @@ def parse_args():
     return parser.parse_args()
 
 def run(args):
-    app = Application(args.path)
-    app.run()
+    try:
+        app = Application(args.path)
+        app.run()
+    except IOError as e:
+        print("error: failed to open file \"%s\"" % args.path)
 
 def main():
     args = parse_args()

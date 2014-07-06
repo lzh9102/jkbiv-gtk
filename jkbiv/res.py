@@ -38,10 +38,12 @@ class DirectoryWalker(BaseResourceWalker):
             # if `path` is a file, then walk its parent directory
             self.directory = os.path.dirname(path)
             filename = os.path.basename(path)
-        else:
+        elif os.path.isdir(path):
             # `path` is a directory
             self.directory = path
             filename = None
+        else:
+            raise IOError()
         self.index = 0
         self.extensions = EXTENSIONS
         self.__refresh(origFile=filename)
